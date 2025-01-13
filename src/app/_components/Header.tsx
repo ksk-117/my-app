@@ -1,7 +1,7 @@
 "use client";
 import { twMerge } from "tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFish } from "@fortawesome/free-solid-svg-icons";
+import { faFish, faLeaf } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 const Header: React.FC = () => {
@@ -17,8 +17,8 @@ const Header: React.FC = () => {
         >
           <div>
             <Link href="/">
-              <FontAwesomeIcon icon={faFish} className="mr-1" />
-                Header
+              <FontAwesomeIcon icon={faLeaf} className="mr-1" />
+                MyBlogApp
             </Link>
           </div>
           <div>
