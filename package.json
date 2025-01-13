@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "next-blog-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,10 +8,14 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@prisma/client": "^6.2.1",
     "isomorphic-dompurify": "^2.20.0",
     "next": "14.2.20",
     "react": "^18",
