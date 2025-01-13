@@ -10,8 +10,7 @@ const PostSummary: React.FC<Props> = (props) => {
   return (
     <div className="border border-slate-400 p-3">
       <div className="font-bold">{post.title}</div>
-        <div>{post.content}</div>
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      <div>{post.content}</div>
     </div>
   );
 };
