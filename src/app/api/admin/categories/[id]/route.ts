@@ -8,6 +8,7 @@ type RouteParams = {
   };
 };
 
+// ▼▼▼ 追加: ここから ▼▼▼
 type RequestBody = {
   name: string;
 };
@@ -29,6 +30,7 @@ export const PUT = async (req: NextRequest, routeParams: RouteParams) => {
     );
   }
 };
+// ▲▲▲ 追加: ここまで ▲▲▲
 
 export const DELETE = async (req: NextRequest, routeParams: RouteParams) => {
   try {
