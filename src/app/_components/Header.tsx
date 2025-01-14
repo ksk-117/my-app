@@ -1,7 +1,7 @@
 "use client";
 import { twMerge } from "tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFish, faLeaf, faSignInAlt, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faFish, faLeaf, faSignInAlt, faSignOutAlt, faCog } from "@fortawesome/free-solid-svg-icons"; // faCogを追加
 import Link from "next/link";
 import { supabase } from "@/utils/supabase";
 import { useAuth } from "@/app/_hooks/useAuth";
@@ -34,7 +34,8 @@ const Header: React.FC = () => {
             {!isLoading &&
               (session ? (
                 <>
-                  <Link href="/admin" className="rounded border border-red-500 bg-red-500 p-1 text-sm text-white">
+                  <Link href="/admin" className="flex items-center rounded border border-red-500 bg-red-500 p-1 text-sm text-white">
+                    <FontAwesomeIcon icon={faCog} className="mr-1" />
                     管理者機能
                   </Link>
                   <button onClick={logout} className="flex items-center">
