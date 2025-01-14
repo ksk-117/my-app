@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation"; // ◀ 注目
+import { useParams } from "next/navigation";
 
 import type { Post } from "@/app/_types/Post";
-import dummyPosts from "@/app/_mocks/dummyPosts";
+import type { PostApiResponse } from "@/app/_types/PostApiResponse";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
@@ -14,25 +14,53 @@ import DOMPurify from "isomorphic-dompurify";
 const Page: React.FC = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
-  // 動的ルートパラメータから 記事id を取得 （URL:/posts/[id]）
+  // 動的ルートパラメータから id を取得 （URL:/posts/[id]）
   const { id } = useParams() as { id: string };
 
-  // コンポーネントが読み込まれたときに「1回だけ」実行する処理
   useEffect(() => {
-    // 本来はウェブAPIを叩いてデータを取得するが、まずはモックデータを使用
-    // (ネットからのデータ取得をシミュレートして１秒後にデータをセットする)
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      console.log("ウェブAPIからデータを取得しました (虚言)");
-      // dummyPosts から id に一致する投稿を取得してセット
-      setPost(dummyPosts.find((post) => post.id === id) || null);
-      setIsLoading(false);
-    }, 1000);
-
-    // データ取得の途中でページ遷移したときにタイマーを解除する処理
-    return () => clearTimeout(timer);
+    const fetchPosts = async () => {
+      setIsLoading(true);
+      try {
+        const requestUrl = `/api/posts/${id}`;
+        const response = await fetch(requestUrl, {
+          method: "GET",
+          cache: "no-store",
+        });
+        if (!response.ok) {
+          throw new Error("データの取得に失敗しました");
+        }
+        const postApiResponse: PostApiResponse = await response.json();
+        setPost({
+          id: postApiResponse.id,
+          title: postApiResponse.title,
+          content: postApiResponse.content,
+          coverImage: {
+            url: postApiResponse.coverImageURL,
+            width: 1000,
+            height: 1000,
+          },
+          createdAt: postApiResponse.createdAt,
+          categories: postApiResponse.categories.map((category) => ({
+            id: category.category.id,
+            name: category.category.name,
+          })),
+        });
+      } catch (e) {
+        setFetchError(
+          e instanceof Error ? e.message : "予期せぬエラーが発生しました"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPosts();
   }, [id]);
+
+  if (fetchError) {
+    return <div>{fetchError}</div>;
+  }
 
   // 投稿データの取得中は「Loading...」を表示
   if (isLoading) {
