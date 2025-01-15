@@ -5,13 +5,14 @@ import type { PostApiResponse } from "@/app/_types/PostApiResponse";
 import Link from "next/link";
 import AdminPostSummary from "@/app/_components/AdminPostSummary";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faPlus, faEdit } from "@fortawesome/free-solid-svg-icons"; // faPlus, faEditを追加
 import { twMerge } from "tailwind-merge";
 
 const Page: React.FC = () => {
   const [posts, setPosts] = useState<Post[] | null>(null);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -56,6 +57,12 @@ const Page: React.FC = () => {
     await fetchPosts();
   };
 
+  const filteredPosts = selectedCategory
+    ? posts?.filter((post) =>
+        post.categories.some((category) => category.id === selectedCategory)
+      )
+    : posts;
+
   if (fetchError) {
     return <div>{fetchError}</div>;
   }
@@ -83,13 +90,32 @@ const Page: React.FC = () => {
               "disabled:cursor-not-allowed disabled:opacity-50"
             )}
           >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
             新規作成
           </button>
         </Link>
       </div>
 
+      <div className="mb-3">
+        <label htmlFor="category" className="mr-2">カテゴリで絞り込み:</label>
+        <select
+          id="category"
+          value={selectedCategory || ""}
+          onChange={(e) => setSelectedCategory(e.target.value || null)}
+          className="border border-gray-300 p-2"
+        >
+          <option value="">すべて</option>
+          {Array.from(new Set(posts.flatMap((post) => post.categories.map((category) => category))))
+            .map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+        </select>
+      </div>
+
       <div className="space-y-3">
-        {posts.map((post) => (
+        {filteredPosts?.map((post) => (
           <AdminPostSummary
             key={post.id}
             post={post}

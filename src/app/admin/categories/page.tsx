@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons"; // faEdit, faTrashを追加
 import { twMerge } from "tailwind-merge";
 import { Category } from "@/app/_types/Category";
 import Link from "next/link";
@@ -127,6 +127,7 @@ const Page: React.FC = () => {
               "disabled:cursor-not-allowed disabled:opacity-50"
             )}
           >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
             カテゴリの新規作成
           </button>
         </Link>
@@ -162,6 +163,7 @@ const Page: React.FC = () => {
                         "bg-indigo-500 text-white hover:bg-indigo-600"
                       )}
                     >
+                      <FontAwesomeIcon icon={faEdit} className="mr-2" />
                       編集
                     </button>
                   </Link>
@@ -175,6 +177,7 @@ const Page: React.FC = () => {
                       handleDelete(category);
                     }}
                   >
+                    <FontAwesomeIcon icon={faTrash} className="mr-2" />
                     削除
                   </button>
                 </div>

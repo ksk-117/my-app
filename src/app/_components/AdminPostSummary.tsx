@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 import DOMPurify from "isomorphic-dompurify";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons"; // faEdit, faTrashを追加
 
 type Props = {
   post: Post;
@@ -87,6 +89,7 @@ const AdminPostSummary: React.FC<Props> = (props) => {
               "bg-indigo-500 text-white hover:bg-indigo-600"
             )}
           >
+            <FontAwesomeIcon icon={faEdit} className="mr-2" />
             編集
           </button>
         </Link>
@@ -101,6 +104,7 @@ const AdminPostSummary: React.FC<Props> = (props) => {
             handleDelete(post);
           }}
         >
+          <FontAwesomeIcon icon={faTrash} className="mr-2" />
           削除
         </button>
       </div>
